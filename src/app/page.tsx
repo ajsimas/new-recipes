@@ -11,10 +11,7 @@ export default function Home() {
     <Container>
       {/* Header */}
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">All Recipes</h1>
-        <p className="text-gray-600">
-          Discover amazing recipes from around the world
-        </p>
+        <h1 className="text-3xl font-bold text-gray-200 mb-4">All Recipes</h1>
       </header>
 
       {/* Recipes List */}

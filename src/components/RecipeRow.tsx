@@ -43,6 +43,7 @@ export default function RecipeRow({ recipe }: RecipeRowProps) {
                 maxDisplay={UI_CONFIG.maxTagsDisplay} 
                 showCount 
                 tagClassName="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full hover:bg-gray-200 transition-colors"
+                disableLinks={true}
               />
             </div>
           </div>
