@@ -1,36 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Recipe Book
+
+A beautiful recipe website built with Next.js that displays recipes stored in markdown files. Features a modern, responsive design with filtering by categories and a clean, user-friendly interface.
+
+## Features
+
+- 📖 **Markdown-based recipes** - Store recipes in easy-to-edit markdown files
+- 🏷️ **Category filtering** - Browse recipes by tags and categories
+- 📱 **Responsive design** - Works perfectly on desktop, tablet, and mobile
+- ⚡ **Fast performance** - Built with Next.js for optimal speed
+- 🎨 **Beautiful UI** - Modern design with Tailwind CSS
+- 🔍 **Search functionality** - Find recipes quickly and easily
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <repository-url>
+cd new-recipes
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Run the development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                    # Next.js app directory
+│   ├── categories/         # Category pages
+│   ├── recipes/           # Recipe pages
+│   ├── globals.css        # Global styles
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Home page
+├── components/            # React components
+│   ├── Header.tsx         # Site header
+│   └── RecipeCard.tsx     # Recipe preview card
+├── content/              # Content files
+│   └── recipes/          # Recipe markdown files
+└── lib/                  # Utility functions
+    └── recipes.ts        # Recipe processing utilities
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Adding Recipes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+To add a new recipe:
 
-## Deploy on Vercel
+1. Create a new markdown file in `src/content/recipes/`
+2. Use the following front matter format:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```markdown
+---
+title: "Recipe Title"
+cookingTime: "30 minutes"
+servings: 4
+difficulty: "Easy"
+tags: ["category1", "category2"]
+image: "/images/recipe-image.jpg"
+date: "2024-01-15"
+description: "Brief description of the recipe"
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Recipe Title
+
+Recipe description...
+
+## Ingredients
+
+- Ingredient 1
+- Ingredient 2
+
+## Instructions
+
+1. Step 1
+2. Step 2
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+## Technologies Used
+
+- **Next.js 15** - React framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **gray-matter** - Markdown front matter parsing
+- **remark** - Markdown processing
+- **date-fns** - Date utilities
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
