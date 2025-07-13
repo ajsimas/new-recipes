@@ -4,9 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface RecipePageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateStaticParams() {
@@ -17,7 +17,8 @@ export async function generateStaticParams() {
 }
 
 export default async function RecipePage({ params }: RecipePageProps) {
-  const recipe = getRecipeBySlug(params.slug);
+  const { slug } = await params;
+  const recipe = getRecipeBySlug(slug);
 
   if (!recipe) {
     notFound();
@@ -94,7 +95,7 @@ export default async function RecipePage({ params }: RecipePageProps) {
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div 
           className="prose prose-lg max-w-none"
-          dangerouslySetInnerHTML={{ __html: recipe.content }}
+          dangerouslySetInnerHTML={{ __html: recipe.content || '' }}
         />
       </div>
     </div>
