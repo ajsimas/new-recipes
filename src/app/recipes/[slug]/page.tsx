@@ -94,7 +94,12 @@ export default async function RecipePage({ params }: RecipePageProps) {
       {/* Recipe Content */}
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div 
-          className="prose prose-lg max-w-none"
+          className="text-gray-900 [&>h1]:text-3xl [&>h1]:font-bold [&>h1]:mb-6 [&>h1]:mt-8 [&>h1]:text-gray-900 [&>h2]:text-2xl [&>h2]:font-semibold [&>h2]:mb-4 [&>h2]:mt-6 [&>h2]:text-gray-900 [&>h3]:text-xl [&>h3]:font-semibold [&>h3]:mb-3 [&>h3]:mt-5 [&>h3]:text-gray-900 [&>p]:mb-4 [&>p]:leading-relaxed [&>ul]:mb-4 [&>ol]:mb-4 [&>li]:mb-2 [&>li]:ml-4"
+          style={{ 
+            wordBreak: 'break-word', 
+            overflowWrap: 'break-word',
+            width: '100%'
+          }}
           dangerouslySetInnerHTML={{ __html: recipe.content || '' }}
         />
       </div>
