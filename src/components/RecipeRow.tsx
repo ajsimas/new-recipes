@@ -1,4 +1,7 @@
+"use client";
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { RecipePreview } from '@/lib/recipes';
 
 interface RecipeRowProps {
@@ -6,8 +9,17 @@ interface RecipeRowProps {
 }
 
 export default function RecipeRow({ recipe }: RecipeRowProps) {
+  const router = useRouter();
+
+  const handleRecipeClick = () => {
+    router.push(`/recipes/${recipe.slug}`);
+  };
+
   return (
-    <Link href={`/recipes/${recipe.slug}`} className="group block mb-4 last:mb-0">
+    <div 
+      onClick={handleRecipeClick}
+      className="group block mb-4 last:mb-0 cursor-pointer"
+    >
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
         <div className="flex">
           {/* Recipe Info */}
@@ -45,14 +57,15 @@ export default function RecipeRow({ recipe }: RecipeRowProps) {
               </div>
 
               {/* Tags */}
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-1" onClick={(e) => e.stopPropagation()}>
                 {recipe.tags.slice(0, 3).map((tag) => (
-                  <span
+                  <Link
                     key={tag}
-                    className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                    href={`/tags/${tag}`}
+                    className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full hover:bg-gray-200 transition-colors"
                   >
                     {tag}
-                  </span>
+                  </Link>
                 ))}
                 {recipe.tags.length > 3 && (
                   <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
@@ -71,6 +84,6 @@ export default function RecipeRow({ recipe }: RecipeRowProps) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
 } 
