@@ -1,6 +1,18 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Header() {
+  const pathname = usePathname();
+
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(path);
+  };
+
   return (
     <header className="bg-white shadow-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -16,8 +28,22 @@ export default function Header() {
           
           <nav className="flex items-center space-x-6">
             <Link 
+              href="/" 
+              className={`transition-colors font-medium ${
+                isActive('/') 
+                  ? 'text-orange-600' 
+                  : 'text-gray-600 hover:text-orange-600'
+              }`}
+            >
+              Home
+            </Link>
+            <Link 
               href="/tags" 
-              className="text-gray-600 hover:text-orange-600 transition-colors font-medium"
+              className={`transition-colors font-medium ${
+                isActive('/tags') 
+                  ? 'text-orange-600' 
+                  : 'text-gray-600 hover:text-orange-600'
+              }`}
             >
               Tags
             </Link>
