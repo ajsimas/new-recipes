@@ -77,7 +77,7 @@ export function getRecipeBySlug(slug: string): Recipe | null {
       content: contentHtml,
       ...(matterResult.data as Omit<Recipe, 'slug' | 'content'>),
     };
-  } catch (error) {
+  } catch {
     return null;
   }
 }
