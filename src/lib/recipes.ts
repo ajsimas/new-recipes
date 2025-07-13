@@ -82,4 +82,26 @@ export function getRecipeBySlug(slug: string): Recipe | null {
   }
 }
 
+export function getAllTags(): { tag: string; count: number }[] {
+  const recipes = getAllRecipes();
+  const tagCounts: { [key: string]: number } = {};
+
+  recipes.forEach((recipe) => {
+    recipe.tags.forEach((tag) => {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    });
+  });
+
+  return Object.entries(tagCounts)
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
+
+export function getRecipesByTag(tag: string): RecipePreview[] {
+  const recipes = getAllRecipes();
+  return recipes
+    .filter((recipe) => recipe.tags.includes(tag))
+    .sort((a, b) => a.title.localeCompare(b.title));
+}
+
  

@@ -13,6 +13,15 @@ export default function Header() {
             </div>
             <span className="text-xl font-bold text-gray-900">Recipe Book</span>
           </Link>
+          
+          <nav className="flex items-center space-x-6">
+            <Link 
+              href="/tags" 
+              className="text-gray-600 hover:text-orange-600 transition-colors font-medium"
+            >
+              Tags
+            </Link>
+          </nav>
         </div>
       </div>
     </header>
