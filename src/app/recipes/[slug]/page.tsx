@@ -1,4 +1,4 @@
-import { getRecipeBySlug, getAllRecipes } from '@/lib/recipes';
+import { getRecipeBySlug, getRecipeSlugs } from '@/lib/recipes';
 import { notFound } from 'next/navigation';
 import RecipeContent from './RecipeContent';
 
@@ -9,9 +9,9 @@ interface RecipePageProps {
 }
 
 export async function generateStaticParams() {
-  const recipes = getAllRecipes();
-  return recipes.map((recipe) => ({
-    slug: recipe.slug,
+  const slugs = getRecipeSlugs();
+  return slugs.map((slug) => ({
+    slug,
   }));
 }
 

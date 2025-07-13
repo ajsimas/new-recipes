@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
+import { SITE_CONFIG } from "@/lib/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Recipe Book - Delicious Recipes for Every Occasion",
+  title: `${SITE_CONFIG.name} - ${SITE_CONFIG.description}`,
   description: "Discover amazing recipes from around the world. From quick weeknight dinners to impressive desserts, find your next favorite dish.",
 };
 

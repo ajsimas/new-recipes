@@ -3,105 +3,103 @@ import path from 'path';
 import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
+import { Recipe, RecipePreview, TagCount } from './types';
 
 const recipesDirectory = path.join(process.cwd(), 'src/content/recipes');
 
-export interface Recipe {
-  slug: string;
-  title: string;
-  cookingTime: string;
-  servings: string | number;
-  tags: string[];
-  image: string;
-  date: string;
-  description: string;
-  content?: string;
-}
-
-export interface RecipePreview {
-  slug: string;
-  title: string;
-  cookingTime: string;
-  servings: string | number;
-  difficulty?: string;
-  tags: string[];
-  image: string;
-  date: string;
-  description: string;
-}
-
 export function getAllRecipes(): RecipePreview[] {
-  // Get file names under /recipes
-  const fileNames = fs.readdirSync(recipesDirectory);
-  const allRecipesData = fileNames
-    .filter((fileName) => fileName.endsWith('.md'))
-    .map((fileName) => {
-      // Remove ".md" from file name to get slug
-      const slug = fileName.replace(/\.md$/, '');
+  try {
+    const fileNames = fs.readdirSync(recipesDirectory);
+    const allRecipesData = fileNames
+      .filter((fileName) => fileName.endsWith('.md'))
+      .map((fileName) => {
+        const slug = fileName.replace(/\.md$/, '');
+        const fullPath = path.join(recipesDirectory, fileName);
+        const fileContents = fs.readFileSync(fullPath, 'utf8');
+        const matterResult = matter(fileContents);
 
-      // Read markdown file as string
-      const fullPath = path.join(recipesDirectory, fileName);
-      const fileContents = fs.readFileSync(fullPath, 'utf8');
+        return {
+          slug,
+          ...(matterResult.data as Omit<RecipePreview, 'slug'>),
+        };
+      });
 
-      // Use gray-matter to parse the post metadata section
-      const matterResult = matter(fileContents);
-
-      // Combine the data with the slug
-      return {
-        slug,
-        ...(matterResult.data as Omit<RecipePreview, 'slug'>),
-      };
-    });
-
-  // Sort recipes by date
-  return allRecipesData.sort((a, b) => (a.date < b.date ? 1 : -1));
+    return allRecipesData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  } catch (error) {
+    console.error('Error reading recipes:', error);
+    return [];
+  }
 }
 
 export function getRecipeBySlug(slug: string): Recipe | null {
   try {
     const fullPath = path.join(recipesDirectory, `${slug}.md`);
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    
+    if (!fs.existsSync(fullPath)) {
+      return null;
+    }
 
-    // Use gray-matter to parse the post metadata section
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
     const matterResult = matter(fileContents);
 
-    // Use remark to convert markdown into HTML string
     const processedContent = remark()
       .use(html)
       .processSync(matterResult.content);
     const contentHtml = processedContent.toString();
 
-    // Combine the data with the slug and content
     return {
       slug,
       content: contentHtml,
       ...(matterResult.data as Omit<Recipe, 'slug' | 'content'>),
     };
-  } catch {
+  } catch (error) {
+    console.error(`Error reading recipe ${slug}:`, error);
     return null;
   }
 }
 
-export function getAllTags(): { tag: string; count: number }[] {
-  const recipes = getAllRecipes();
-  const tagCounts: { [key: string]: number } = {};
+export function getAllTags(): TagCount[] {
+  try {
+    const recipes = getAllRecipes();
+    const tagCounts: Record<string, number> = {};
 
-  recipes.forEach((recipe) => {
-    recipe.tags.forEach((tag) => {
-      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    recipes.forEach((recipe) => {
+      recipe.tags.forEach((tag) => {
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+      });
     });
-  });
 
-  return Object.entries(tagCounts)
-    .map(([tag, count]) => ({ tag, count }))
-    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+    return Object.entries(tagCounts)
+      .map(([tag, count]) => ({ tag, count }))
+      .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+  } catch (error) {
+    console.error('Error getting tags:', error);
+    return [];
+  }
 }
 
 export function getRecipesByTag(tag: string): RecipePreview[] {
-  const recipes = getAllRecipes();
-  return recipes
-    .filter((recipe) => recipe.tags.includes(tag))
-    .sort((a, b) => a.title.localeCompare(b.title));
+  try {
+    const recipes = getAllRecipes();
+    return recipes
+      .filter((recipe) => recipe.tags.includes(tag))
+      .sort((a, b) => a.title.localeCompare(b.title));
+  } catch (error) {
+    console.error(`Error getting recipes for tag ${tag}:`, error);
+    return [];
+  }
+}
+
+export function getRecipeSlugs(): string[] {
+  try {
+    const fileNames = fs.readdirSync(recipesDirectory);
+    return fileNames
+      .filter((fileName) => fileName.endsWith('.md'))
+      .map((fileName) => fileName.replace(/\.md$/, ''));
+  } catch (error) {
+    console.error('Error getting recipe slugs:', error);
+    return [];
+  }
 }
 
  
