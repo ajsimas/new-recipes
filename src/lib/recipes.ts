@@ -42,14 +42,9 @@ export function getRecipeBySlug(slug: string): Recipe | null {
     const fileContents = fs.readFileSync(fullPath, 'utf8');
     const matterResult = matter(fileContents);
 
-    const processedContent = remark()
-      .use(html)
-      .processSync(matterResult.content);
-    const contentHtml = processedContent.toString();
-
     return {
       slug,
-      content: contentHtml,
+      content: matterResult.content,
       ...(matterResult.data as Omit<Recipe, 'slug' | 'content'>),
     };
   } catch (error) {
