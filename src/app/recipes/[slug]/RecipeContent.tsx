@@ -1,6 +1,7 @@
 "use client";
 
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 import { Recipe } from '@/lib/types';
 import Breadcrumb from '@/components/ui/Breadcrumb';
 import TagList from '@/components/ui/TagList';
@@ -67,14 +68,9 @@ export default function RecipeContent({ recipe }: RecipeContentProps) {
 
       {/* Recipe Content */}
       <div className="bg-white rounded-lg shadow-sm p-6">
-        <div 
-          className="prose prose-gray max-w-none"
-          style={{ 
-            wordBreak: 'break-word', 
-            overflowWrap: 'break-word'
-          }}
-          dangerouslySetInnerHTML={{ __html: recipe.content || '' }}
-        />
+        <div className="prose prose-gray max-w-none">
+          <ReactMarkdown>{recipe.content || ''}</ReactMarkdown>
+        </div>
       </div>
     </div>
   );
